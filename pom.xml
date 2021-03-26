@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.craft.beer</groupId>
-	<artifactId>project-craft-beer</artifactId>
+	<artifactId>backend-craft-beer</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>project-craft-beer</name>
 	<description>Demo project for Spring Boot</description>
