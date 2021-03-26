@@ -7,6 +7,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.craft.beer.expcetions.IdRequiredPathException;
+import com.craft.beer.expcetions.ResourceNotFoundException;
 import com.craft.beer.model.entity.Beer;
 import com.craft.beer.model.request.BeerRequest;
 import com.craft.beer.repository.BeerRepository;
@@ -51,7 +53,8 @@ public class BeerService {
 	}
 
 	public BeerRequest updateBeer(String id, BeerRequest beerRequest) {
-		Optional<Beer> b = beerRepository.findById(id);
+		Optional<Beer> b = Optional.of(beerRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Id[" + id + "] not found in our database")));
 
 		if (b.isPresent()) {
 			Beer beer = b.get();
@@ -64,7 +67,6 @@ public class BeerService {
 			beerRequest.setId(beer.getId());
 			return beerRequest;
 		}
-		
 		return null;
 
 	}
