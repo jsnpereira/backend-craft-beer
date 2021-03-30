@@ -3,6 +3,8 @@ package com.craft.beer.model.entity;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -19,6 +21,11 @@ public class Beer {
 	private String origem;
 	private double abv;
 	private int ibu;
+	private int volume;
+	private int temperature;
+	@ManyToOne
+	@JoinColumn(name = "company_id")
+	private Company company;
 
 	public String getId() {
 		return id;
@@ -67,4 +74,28 @@ public class Beer {
 	public void setIbu(int ibu) {
 		this.ibu = ibu;
 	}
+
+	public int getVolume() {
+		return volume;
+	}
+
+	public void setVolume(int volume) {
+		this.volume = volume;
+	}
+
+	public int getTemperature() {
+		return temperature;
+	}
+
+	public void setTemperature(int temperature) {
+		this.temperature = temperature;
+	}
+
+	public Company getCompany() {
+		return company;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
+	}	
 }

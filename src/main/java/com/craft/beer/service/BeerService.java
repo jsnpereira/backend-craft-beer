@@ -7,8 +7,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.craft.beer.expcetions.IdMandatoryException;
 import com.craft.beer.expcetions.IdRequiredPathException;
 import com.craft.beer.expcetions.ResourceNotFoundException;
+import com.craft.beer.model.converts.BeerConverts;
 import com.craft.beer.model.entity.Beer;
 import com.craft.beer.model.request.BeerRequest;
 import com.craft.beer.repository.BeerRepository;
@@ -23,13 +25,10 @@ public class BeerService {
 	}
 
 	public BeerRequest save(BeerRequest beerRequest) {
-		Beer b = new Beer();
-		b.setName(beerRequest.getName());
-		b.setOrigem(beerRequest.getOrigem());
-		b.setStyle(beerRequest.getStyle());
-		b.setIbu(beerRequest.getIbu());
-		b.setAbv(beerRequest.getAbv());
-		b = beerRepository.save(b);
+		if(beerRequest.getCompanyId() == null || beerRequest.getCompanyId().isEmpty()) {
+			throw new IdMandatoryException("Company ID attribute is mandatory");
+		}
+		Beer b = beerRepository.save(BeerConverts.convertToEntity(beerRequest));
 		beerRequest.setId(b.getId());
 		return beerRequest;
 	}
@@ -38,7 +37,7 @@ public class BeerService {
 		List<BeerRequest> requestsList = new ArrayList<>();
 		List<Beer> lists = beerRepository.findAll();
 		for (Beer beer : lists) {
-			requestsList.add(new BeerRequest(beer));
+			requestsList.add(BeerConverts.convertToRequest(beer));
 		}
 		return requestsList;
 	}
@@ -47,7 +46,7 @@ public class BeerService {
 		Optional<Beer> beer = beerRepository.findById(id);
 
 		if (beer.isPresent()) {
-			return new BeerRequest(beer.get());
+			return BeerConverts.convertToRequest(beer.get());
 		}
 		return null;
 	}
@@ -58,11 +57,7 @@ public class BeerService {
 
 		if (b.isPresent()) {
 			Beer beer = b.get();
-			beer.setName(beerRequest.getName());
-			beer.setOrigem(beerRequest.getOrigem());
-			beer.setStyle(beerRequest.getStyle());
-			beer.setIbu(beerRequest.getIbu());
-			beer.setAbv(beerRequest.getAbv());
+			BeerConverts.setUpUpdate(beer, beerRequest);
 			beerRepository.save(beer);
 			beerRequest.setId(beer.getId());
 			return beerRequest;

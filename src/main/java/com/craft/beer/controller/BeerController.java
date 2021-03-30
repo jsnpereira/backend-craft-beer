@@ -1,6 +1,6 @@
 package com.craft.beer.controller;
 
-import java.net.URI;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +46,8 @@ public class BeerController {
 
 	@PostMapping
 	public ResponseEntity<BeerRequest> save(@RequestBody BeerRequest beerRequest) {
+		System.out.println("Preparing to save");
 		BeerRequest bRequestSaved = beerService.save(beerRequest);
-
 		if (bRequestSaved == null) {
 			return ResponseEntity.notFound().build();
 		} else {
