@@ -2,18 +2,18 @@ package com.craft.beer.model.request;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-@JsonIgnoreProperties(value = { "id" }, allowGetters = true)
+@JsonIgnoreProperties(value = { "id" }, allowGetters = true, allowSetters = true)
 public class BeerRequest {
 	private String id;
 	private String name;
-	@JsonProperty(value = "style_id")
+	@JsonProperty(value = "style.id")
 	private String styleId;
 	private String origem;
 	private double abv;
 	private int ibu;
 	private int volume;
 	private int temperature;
-	@JsonProperty(value = "company_id")
+	@JsonProperty(value = "company.id")
 	private String companyId;
 
 	public BeerRequest() {

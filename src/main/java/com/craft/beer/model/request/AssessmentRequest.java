@@ -8,7 +8,7 @@ public class AssessmentRequest {
 	private String id;
 	private int rate;
 	private String comment;
-	@JsonProperty("beer_id")
+	@JsonProperty("beer.id")
 	private String beerId;
 
 	public String getId() {

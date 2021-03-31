@@ -14,6 +14,8 @@ import com.craft.beer.repository.CompanyRepository;
 
 @Service
 public class CompanyService {
+	private String ID_NOT_FOUND = "Company id[XXX] not found in our database";
+	
 	private final CompanyRepository companyRepository;
 
 	@Autowired
@@ -39,13 +41,13 @@ public class CompanyService {
 
 	public CompanyRequest getFoundById(String id) {
 		Company company = companyRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Company Id[" + id + "] not found in our database"));
+				.orElseThrow(() -> new ResourceNotFoundException(ID_NOT_FOUND.replace("XXX", id)));
 		return CompanyConvert.convertToRequest(company);
 	}
 	
 	public CompanyRequest update(String id, CompanyRequest companyRequest) {
 		Company company = companyRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Company Id[" + id + "] not found in our database"));
+				.orElseThrow(() -> new ResourceNotFoundException(ID_NOT_FOUND.replace("XXX", id)));
 		
 		CompanyConvert.setUpdate(company, companyRequest);
 		companyRepository.save(company);

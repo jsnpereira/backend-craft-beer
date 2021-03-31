@@ -17,6 +17,10 @@ import com.craft.beer.repository.BeerRepository;
 
 @Service
 public class BeerService {
+	private String ID_MANDATORY = "Company ID attribute is mandatory";
+	private String ID_NOT_FOUND = "Beer Id[XXX] not found in our database";
+	
+	
 	private final BeerRepository beerRepository;
 
 	@Autowired
@@ -26,7 +30,7 @@ public class BeerService {
 
 	public BeerRequest save(BeerRequest beerRequest) {
 		if(beerRequest.getCompanyId() == null || beerRequest.getCompanyId().isEmpty()) {
-			throw new IdMandatoryException("Company ID attribute is mandatory");
+			throw new IdMandatoryException(ID_MANDATORY);
 		}
 		Beer b = beerRepository.save(BeerConvert.convertToEntity(beerRequest));
 		beerRequest.setId(b.getId());
@@ -43,7 +47,8 @@ public class BeerService {
 	}
 
 	public BeerRequest getBeerById(String id) {
-		Optional<Beer> beer = beerRepository.findById(id);
+		Optional<Beer> beer = Optional.of(beerRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException(ID_NOT_FOUND.replace("XXX", id))));
 
 		if (beer.isPresent()) {
 			return BeerConvert.convertToRequest(beer.get());
@@ -53,7 +58,7 @@ public class BeerService {
 
 	public BeerRequest updateBeer(String id, BeerRequest beerRequest) {
 		Optional<Beer> b = Optional.of(beerRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Id[" + id + "] not found in our database")));
+				.orElseThrow(() -> new ResourceNotFoundException(ID_NOT_FOUND.replace("XXX", id))));
 
 		if (b.isPresent()) {
 			Beer beer = b.get();

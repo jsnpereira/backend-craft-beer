@@ -21,6 +21,9 @@ public class Assessment {
 	@ManyToOne
 	@JoinColumn(name = "beer_id")
 	private Beer beer;
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User user;
 
 	public String getId() {
 		return id;

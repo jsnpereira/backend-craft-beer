@@ -15,6 +15,7 @@ import com.craft.beer.repository.StyleTypeRepository;
 
 @Service
 public class StyleTypeService {
+	private String ID_NOT_FOUND = "Style id[XXX] not found in our databse";
 
 	private StyleTypeRepository styleTypeRepository;
 
@@ -40,13 +41,13 @@ public class StyleTypeService {
 
 	public StyleTypeRequest getFindById(String id) {
 		StyleType st = styleTypeRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Style id[" + id + "] not found in our database"));
+				.orElseThrow(() -> new ResourceNotFoundException(ID_NOT_FOUND.replace("XXX", id)));
 		return StyleTypeConvert.convertToRequest(st);
 	}
 	
 	public StyleTypeRequest update(String id, StyleTypeRequest styleTypeRequest) {
 		 Optional<StyleType> st = Optional.of(styleTypeRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Style id[" + id + "] not found in our database")));
+				.orElseThrow(() -> new ResourceNotFoundException(ID_NOT_FOUND.replace("XXX", id))));
 		
 		if (st.isPresent()) {
 			StyleTypeConvert.update(st.get(), styleTypeRequest);
