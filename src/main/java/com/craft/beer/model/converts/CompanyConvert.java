@@ -3,7 +3,7 @@ package com.craft.beer.model.converts;
 import com.craft.beer.model.entity.Company;
 import com.craft.beer.model.request.CompanyRequest;
 
-public class CompanyConverts {
+public class CompanyConvert {
 
 	public static Company convertToEntity(CompanyRequest companyRequest) {
 		Company company = new Company();

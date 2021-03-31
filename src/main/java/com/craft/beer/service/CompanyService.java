@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.craft.beer.expcetions.ResourceNotFoundException;
-import com.craft.beer.model.converts.CompanyConverts;
+import com.craft.beer.model.converts.CompanyConvert;
 import com.craft.beer.model.entity.Company;
 import com.craft.beer.model.request.CompanyRequest;
 import com.craft.beer.repository.CompanyRepository;
@@ -23,8 +23,8 @@ public class CompanyService {
 	}
 
 	public CompanyRequest save(CompanyRequest companyRequest) {
-		Company company = companyRepository.save(CompanyConverts.convertToEntity(companyRequest));
-		return CompanyConverts.convertToRequest(company);
+		Company company = companyRepository.save(CompanyConvert.convertToEntity(companyRequest));
+		return CompanyConvert.convertToRequest(company);
 	}
 
 	public List<CompanyRequest> getAllList() {
@@ -32,7 +32,7 @@ public class CompanyService {
 
 		List<CompanyRequest> lcr = new ArrayList<>();
 		for (Company company : list) {
-			lcr.add(CompanyConverts.convertToRequest(company));
+			lcr.add(CompanyConvert.convertToRequest(company));
 		}
 		return lcr;
 	}
@@ -40,14 +40,14 @@ public class CompanyService {
 	public CompanyRequest getFoundById(String id) {
 		Company company = companyRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Company Id[" + id + "] not found in our database"));
-		return CompanyConverts.convertToRequest(company);
+		return CompanyConvert.convertToRequest(company);
 	}
 	
 	public CompanyRequest update(String id, CompanyRequest companyRequest) {
 		Company company = companyRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Company Id[" + id + "] not found in our database"));
 		
-		CompanyConverts.setUpdate(company, companyRequest);
+		CompanyConvert.setUpdate(company, companyRequest);
 		companyRepository.save(company);
 		companyRequest.setId(company.getId());
 		return companyRequest;

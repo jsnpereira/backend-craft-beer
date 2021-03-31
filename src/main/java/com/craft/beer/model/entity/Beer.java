@@ -1,10 +1,14 @@
 package com.craft.beer.model.entity;
 
+import java.util.List;
+
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -17,7 +21,9 @@ public class Beer {
 	@GenericGenerator(name = "uuid", strategy = "uuid2")
 	private String id;
 	private String name;
-	private String style;
+	@ManyToOne
+	@JoinColumn(name = "style_id")
+	private StyleType style;
 	private String origem;
 	private double abv;
 	private int ibu;
@@ -26,6 +32,8 @@ public class Beer {
 	@ManyToOne
 	@JoinColumn(name = "company_id")
 	private Company company;
+	@OneToMany(targetEntity = Assessment.class, fetch = FetchType.LAZY)
+	private List<Assessment> assessments;
 
 	public String getId() {
 		return id;
@@ -43,11 +51,11 @@ public class Beer {
 		this.name = name;
 	}
 
-	public String getStyle() {
+	public StyleType getStyle() {
 		return style;
 	}
 
-	public void setStyle(String style) {
+	public void setStyle(StyleType style) {
 		this.style = style;
 	}
 
@@ -97,5 +105,14 @@ public class Beer {
 
 	public void setCompany(Company company) {
 		this.company = company;
-	}	
+	}
+
+	public List<Assessment> getAssessments() {
+		return assessments;
+	}
+
+	public void setAssessments(List<Assessment> assessments) {
+		this.assessments = assessments;
+	}
+
 }

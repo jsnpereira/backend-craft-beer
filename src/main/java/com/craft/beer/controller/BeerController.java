@@ -60,12 +60,7 @@ public class BeerController {
 			@RequestBody BeerRequest beerRequest) {
 
 		BeerRequest bRequestUpdated = beerService.updateBeer(requestId, beerRequest);
-		return new ResponseEntity<BeerRequest>(bRequestUpdated, HttpStatus.OK);
-	}
-
-	@PutMapping()
-	public ResponseEntity<BeerRequest> updateBeerWithId(@RequestBody BeerRequest beerRequest) {
-		throw new IdRequiredPathException("Please put the ID in path");
+		return new ResponseEntity<BeerRequest>(bRequestUpdated, HttpStatus.ACCEPTED);
 	}
 
 }
