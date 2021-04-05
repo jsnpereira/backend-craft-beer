@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class UserRequest {
 	private String id;
 	@JsonProperty(value = "first.name")
-	private String firstname;
+	private String firstName;
 	@JsonProperty(value = "last.name")
 	private String lastName;
 	private String email;
@@ -21,12 +21,12 @@ public class UserRequest {
 		this.id = id;
 	}
 
-	public String getFirstname() {
-		return firstname;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setFristname(String firstname) {
-		this.firstname = firstname;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
 	public String getLastName() {
@@ -34,7 +34,7 @@ public class UserRequest {
 	}
 
 	public void setLastName(String lastName) {
-		lastName = lastName;
+		this.lastName = lastName;
 	}
 
 	public String getEmail() {

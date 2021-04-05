@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import com.craft.beer.expcetions.IdMandatoryException;
 import com.craft.beer.expcetions.IdRequiredPathException;
 import com.craft.beer.expcetions.ResourceNotFoundException;
-import com.craft.beer.model.converts.BeerConvert;
+import com.craft.beer.model.commons.BeerDTO;
 import com.craft.beer.model.entity.Beer;
 import com.craft.beer.model.request.BeerRequest;
 import com.craft.beer.repository.BeerRepository;
@@ -32,7 +32,7 @@ public class BeerService {
 		if(beerRequest.getCompanyId() == null || beerRequest.getCompanyId().isEmpty()) {
 			throw new IdMandatoryException(ID_MANDATORY);
 		}
-		Beer b = beerRepository.save(BeerConvert.convertToEntity(beerRequest));
+		Beer b = beerRepository.save(BeerDTO.convertToEntity(beerRequest));
 		beerRequest.setId(b.getId());
 		return beerRequest;
 	}
@@ -41,7 +41,7 @@ public class BeerService {
 		List<BeerRequest> requestsList = new ArrayList<>();
 		List<Beer> lists = beerRepository.findAll();
 		for (Beer beer : lists) {
-			requestsList.add(BeerConvert.convertToRequest(beer));
+			requestsList.add(BeerDTO.convertToRequest(beer));
 		}
 		return requestsList;
 	}
@@ -51,7 +51,7 @@ public class BeerService {
 				.orElseThrow(() -> new ResourceNotFoundException(ID_NOT_FOUND.replace("XXX", id))));
 
 		if (beer.isPresent()) {
-			return BeerConvert.convertToRequest(beer.get());
+			return BeerDTO.convertToRequest(beer.get());
 		}
 		return null;
 	}
@@ -61,13 +61,12 @@ public class BeerService {
 				.orElseThrow(() -> new ResourceNotFoundException(ID_NOT_FOUND.replace("XXX", id))));
 
 		if (b.isPresent()) {
-			Beer beer = b.get();
-			BeerConvert.setUpUpdate(beer, beerRequest);
+			Beer beer = BeerDTO.convertToEntity(beerRequest);
 			beerRepository.save(beer);
 			beerRequest.setId(beer.getId());
 			return beerRequest;
 		}
+		
 		return null;
-
 	}
 }

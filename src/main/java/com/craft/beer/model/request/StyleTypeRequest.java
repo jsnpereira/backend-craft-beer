@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class StyleTypeRequest {
 	private String id;
 	private String name;
-	private String Description;
+	private String description;
 	private String origem;
 	private String cup;
 
@@ -27,11 +27,11 @@ public class StyleTypeRequest {
 	}
 
 	public String getDescription() {
-		return Description;
+		return description;
 	}
 
 	public void setDescription(String description) {
-		Description = description;
+		this.description = description;
 	}
 
 	public String getOrigem() {

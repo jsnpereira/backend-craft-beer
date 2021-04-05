@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.craft.beer.expcetions.ResourceNotFoundException;
-import com.craft.beer.model.converts.StyleTypeConvert;
+import com.craft.beer.model.commons.StyleTypeDTO;
 import com.craft.beer.model.entity.StyleType;
 import com.craft.beer.model.request.StyleTypeRequest;
 import com.craft.beer.repository.StyleTypeRepository;
@@ -26,15 +26,15 @@ public class StyleTypeService {
 	}
 
 	public StyleTypeRequest save(StyleTypeRequest styleTypeRequest) {
-		StyleType st = styleTypeRepository.save(StyleTypeConvert.convertToEntity(styleTypeRequest));
-		return StyleTypeConvert.convertToRequest(st);
+		StyleType st = styleTypeRepository.save(StyleTypeDTO.convertToEntity(styleTypeRequest));
+		return StyleTypeDTO.convertToRequest(st);
 	}
 
 	public List<StyleTypeRequest> getAllFinds() {
 		List<StyleType> list = styleTypeRepository.findAll();
 		List<StyleTypeRequest> requests = new ArrayList<StyleTypeRequest>();
 		for (StyleType styleType : list) {
-			requests.add(StyleTypeConvert.convertToRequest(styleType));
+			requests.add(StyleTypeDTO.convertToRequest(styleType));
 		}
 		return requests;
 	}
@@ -42,7 +42,7 @@ public class StyleTypeService {
 	public StyleTypeRequest getFindById(String id) {
 		StyleType st = styleTypeRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException(ID_NOT_FOUND.replace("XXX", id)));
-		return StyleTypeConvert.convertToRequest(st);
+		return StyleTypeDTO.convertToRequest(st);
 	}
 	
 	public StyleTypeRequest update(String id, StyleTypeRequest styleTypeRequest) {
@@ -50,11 +50,11 @@ public class StyleTypeService {
 				.orElseThrow(() -> new ResourceNotFoundException(ID_NOT_FOUND.replace("XXX", id))));
 		
 		if (st.isPresent()) {
-			StyleTypeConvert.update(st.get(), styleTypeRequest);
-			styleTypeRequest.setId(st.get().getId());
+			StyleType stDTO = StyleTypeDTO.convertToEntity(styleTypeRequest);
+			stDTO.setId(st.get().getId());
+			return StyleTypeDTO.convertToRequest(styleTypeRepository.save(stDTO));
 		}
-		
-		return styleTypeRequest;
+		return null;
 	}
 
 }

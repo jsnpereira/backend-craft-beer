@@ -8,8 +8,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.Length;
 
 @Entity
 @Table(name = "users")
@@ -19,11 +21,11 @@ public class User {
 	@GeneratedValue(generator = "uuid")
 	@GenericGenerator(name = "uuid", strategy = "uuid2")
 	private String id;
-	private String Fristname;
-	private String LastName;
+	private String firstName;
+	private String lastName;
 	private String email;
 	private String credential;
-	@OneToMany(targetEntity = Assessment.class,fetch = FetchType.LAZY)
+	@OneToMany(targetEntity = Assessment.class, fetch = FetchType.LAZY)
 	private List<Assessment> assessments;
 
 	public String getId() {
@@ -34,20 +36,20 @@ public class User {
 		this.id = id;
 	}
 
-	public String getFristname() {
-		return Fristname;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setFristname(String fristname) {
-		Fristname = fristname;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
 	public String getLastName() {
-		return LastName;
+		return lastName;
 	}
 
 	public void setLastName(String lastName) {
-		LastName = lastName;
+		this.lastName = lastName;
 	}
 
 	public String getEmail() {
@@ -73,4 +75,5 @@ public class User {
 	public void setAssessments(List<Assessment> assessments) {
 		this.assessments = assessments;
 	}
+
 }

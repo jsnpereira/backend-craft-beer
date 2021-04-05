@@ -2,12 +2,13 @@ package com.craft.beer.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.craft.beer.expcetions.ResourceNotFoundException;
-import com.craft.beer.model.converts.CompanyConvert;
+import com.craft.beer.model.commons.CompanyDTO;
 import com.craft.beer.model.entity.Company;
 import com.craft.beer.model.request.CompanyRequest;
 import com.craft.beer.repository.CompanyRepository;
@@ -25,8 +26,8 @@ public class CompanyService {
 	}
 
 	public CompanyRequest save(CompanyRequest companyRequest) {
-		Company company = companyRepository.save(CompanyConvert.convertToEntity(companyRequest));
-		return CompanyConvert.convertToRequest(company);
+		Company company = companyRepository.save(CompanyDTO.convertToEntity(companyRequest));
+		return CompanyDTO.convertToRequest(company);
 	}
 
 	public List<CompanyRequest> getAllList() {
@@ -34,7 +35,7 @@ public class CompanyService {
 
 		List<CompanyRequest> lcr = new ArrayList<>();
 		for (Company company : list) {
-			lcr.add(CompanyConvert.convertToRequest(company));
+			lcr.add(CompanyDTO.convertToRequest(company));
 		}
 		return lcr;
 	}
@@ -42,18 +43,19 @@ public class CompanyService {
 	public CompanyRequest getFoundById(String id) {
 		Company company = companyRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException(ID_NOT_FOUND.replace("XXX", id)));
-		return CompanyConvert.convertToRequest(company);
+		return CompanyDTO.convertToRequest(company);
 	}
 	
 	public CompanyRequest update(String id, CompanyRequest companyRequest) {
-		Company company = companyRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException(ID_NOT_FOUND.replace("XXX", id)));
-		
-		CompanyConvert.setUpdate(company, companyRequest);
-		companyRepository.save(company);
-		companyRequest.setId(company.getId());
-		return companyRequest;
-		
+		Optional<Company> company = Optional.of(companyRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException(ID_NOT_FOUND.replace("XXX", id))));
+			
+		if (company.isPresent()) {
+			Company c = CompanyDTO.convertToEntity(companyRequest);
+			c.setId(company.get().getId());
+			return CompanyDTO.convertToRequest(companyRepository.save(c));
+		}
+		return null;		
 	}
 
 }

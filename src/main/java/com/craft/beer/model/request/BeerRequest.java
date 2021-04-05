@@ -1,8 +1,13 @@
 package com.craft.beer.model.request;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-@JsonIgnoreProperties(value = { "id" }, allowGetters = true, allowSetters = true)
+@JsonIgnoreProperties(value = { "id" }, allowGetters = true)
 public class BeerRequest {
 	private String id;
 	private String name;
