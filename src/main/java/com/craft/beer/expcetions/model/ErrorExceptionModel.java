@@ -1,16 +1,28 @@
-package com.craft.beer.expcetions;
+package com.craft.beer.expcetions.model;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-public class ExceptionResponse {
-	private List<String> messages;
+public class ErrorExceptionModel {
 	private String errorMessage;
 	private String errorCode;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
 	private LocalDateTime timestamp;
+	
+	
+
+	public ErrorExceptionModel() {
+
+	}
+
+	public ErrorExceptionModel(String errorMessage, String errorCode, LocalDateTime timestamp) {
+		super();
+		this.errorMessage = errorMessage;
+		this.errorCode = errorCode;
+		this.timestamp = timestamp;
+	}
 
 	public String getErrorMessage() {
 		return errorMessage;
@@ -35,12 +47,4 @@ public class ExceptionResponse {
 	public void setTimestamp(LocalDateTime timestamp) {
 		this.timestamp = timestamp;
 	}
-
-	public List<String> getMessages() {
-		return messages;
-	}
-
-	public void setMessages(List<String> messages) {
-		this.messages = messages;
-	}	
 }

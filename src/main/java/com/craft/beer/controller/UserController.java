@@ -2,6 +2,7 @@ package com.craft.beer.controller;
 
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,7 @@ public class UserController {
 	}
 
 	@PostMapping
-	public ResponseEntity<UserRequest> create(@RequestBody UserRequest userRequest) {
+	public ResponseEntity<UserRequest> create( @RequestBody UserRequest userRequest) {
 		UserRequest uRequest = userService.save(userRequest);
 		return new ResponseEntity<UserRequest>(uRequest, HttpStatus.CREATED);
 	}
