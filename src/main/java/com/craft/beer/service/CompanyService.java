@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.craft.beer.expcetions.ResourceNotFoundException;
 import com.craft.beer.model.commons.CompanyDTO;
+import com.craft.beer.model.entity.Beer;
 import com.craft.beer.model.entity.Company;
 import com.craft.beer.model.request.CompanyRequest;
 import com.craft.beer.repository.CompanyRepository;
@@ -32,6 +33,10 @@ public class CompanyService {
 
 	public List<CompanyRequest> getAllList() {
 		List<Company> list = companyRepository.findAll();
+		
+		for (Company company : list) {
+			System.out.println("Beers size : "+company.getBeers().size());
+		}
 
 		List<CompanyRequest> lcr = new ArrayList<>();
 		for (Company company : list) {

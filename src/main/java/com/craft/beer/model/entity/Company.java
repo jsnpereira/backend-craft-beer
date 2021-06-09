@@ -2,6 +2,7 @@ package com.craft.beer.model.entity;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -12,9 +13,10 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+
 @Entity
 @Table(name = "companies")
-public class Company{
+public class Company {
 	@Id
 	@GeneratedValue(generator = "uuid")
 	@GenericGenerator(name = "uuid", strategy = "uuid2")
@@ -27,8 +29,16 @@ public class Company{
 	private String url;
 	private String email;
 	private String phoneNumber;
-	@OneToMany(targetEntity = Beer.class, fetch = FetchType.EAGER)
+	@OneToMany(targetEntity = Beer.class, mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Beer> beers;
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	public String getName() {
 		return name;
@@ -94,14 +104,6 @@ public class Company{
 		this.phoneNumber = phoneNumber;
 	}
 
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
 	public List<Beer> getBeers() {
 		return beers;
 	}
@@ -109,4 +111,5 @@ public class Company{
 	public void setBeers(List<Beer> beers) {
 		this.beers = beers;
 	}
+
 }

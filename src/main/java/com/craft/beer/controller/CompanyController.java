@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.craft.beer.model.request.CompanyRequest;
+import com.craft.beer.model.request.settings.CompanyRequestSettings;
 import com.craft.beer.service.CompanyService;
 
 @RestController
@@ -24,6 +25,7 @@ public class CompanyController {
 	@Autowired
 	public CompanyController(CompanyService companyService) {
 		super();
+		CompanyRequestSettings.showBeers = true;
 		this.companyService = companyService;
 	}
 	
