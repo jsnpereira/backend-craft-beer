@@ -33,10 +33,6 @@ public class CompanyService {
 
 	public List<CompanyRequest> getAllList() {
 		List<Company> list = companyRepository.findAll();
-		
-		for (Company company : list) {
-			System.out.println("Beers size : "+company.getBeers().size());
-		}
 
 		List<CompanyRequest> lcr = new ArrayList<>();
 		for (Company company : list) {
